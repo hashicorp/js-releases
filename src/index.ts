@@ -162,12 +162,15 @@ export class Release {
 	}
 }
 
-export async function getCurrentRelease(product: string, userAgent: string): Promise<Release> {
-	const indexUrl = `${releasesUrl}/${product}/index.json`;
-	const headers = { 'User-Agent': userAgent };
+export async function getRelease(product: string, version?: string, userAgent?: string): Promise<Release> {
+	const indexUrl = version ? `${releasesUrl}/${product}/${version}/index.json` : `${releasesUrl}/${product}/index.json`;
+	const headers = userAgent ? { 'User-Agent': userAgent } : null;
 	const body = await httpsRequest(indexUrl, { headers });
-	const releases = JSON.parse(body);
-	const currentVersion = Object.keys(releases.versions).sort(semver.rcompare)[0];
-	const currentRelease = releases.versions[currentVersion];
-	return new Release(currentRelease);
+	const response = JSON.parse(body);
+	if (!version || version === "latest") {
+		version = Object.keys(response.versions).sort(semver.rcompare)[0];
+		return new Release(response.versions[version]);
+	} else {
+		return new Release(response);
+	}
 }
