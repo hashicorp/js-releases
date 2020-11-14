@@ -1,4 +1,4 @@
-# 1.0.0 (unreleased)
+# 1.0.0 (2020-11-13)
 
 js-releases is a handy tool for downloading and verifying packages from releases.hashicorp.com. You can:
  - fetch metadata for a given release (or latest)
