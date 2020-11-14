@@ -1,3 +1,8 @@
+# 1.0.1
+
+Bugs:
+- Fix handling of request for latest release
+
 # 1.0.0 (2020-11-13)
 
 js-releases is a handy tool for downloading and verifying packages from releases.hashicorp.com. You can:
