@@ -163,15 +163,26 @@ export class Release {
 }
 
 export async function getRelease(product: string, version?: string, userAgent?: string): Promise<Release> {
-	const validVersion = semver.valid(version); // "latest" will return invalid but that's ok because we'll select it by default
-	const indexUrl = validVersion ? `${releasesUrl}/${product}/${validVersion}/index.json` : `${releasesUrl}/${product}/index.json`;
+	const validVersion = semver.validRange(version); // "latest" will return invalid but that's ok because we'll select it by default
+	const indexUrl = `${releasesUrl}/${product}/index.json`;
 	const headers = userAgent ? { 'User-Agent': userAgent } : null;
 	const body = await httpsRequest(indexUrl, { headers });
 	const response = JSON.parse(body);
-	if (!validVersion) {
+	let release: Release;
+	if (!validVersion) { // pick the latest release
 		version = Object.keys(response.versions).sort(semver.rcompare)[0];
-		return new Release(response.versions[version]);
+		release = new Release(response.versions[version]);
 	} else {
-		return new Release(response);
+		release = matchVersion(response.versions, validVersion);
+	}
+	return release;
+}
+
+function matchVersion(versions: Release[], range: string): Release {
+	const version = semver.maxSatisfying(Object.keys(versions), range);
+	if (version) {
+		return new Release(versions[version]);
+	} else {
+		throw new Error("No matching version found");
 	}
 }

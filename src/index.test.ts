@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as path from 'path';
 
-import { Release } from './index';
+import { Release, getRelease } from './index';
 
 describe('LS installer', () => {
 	it('should calculate correct file sha256 sum', async () => {
@@ -12,4 +12,5 @@ describe('LS installer', () => {
 		const sum = await release.calculateFileSha256Sum(testPath);
 		assert.strictEqual(sum, expectedSum);
 	});
+
 });
