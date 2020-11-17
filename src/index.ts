@@ -163,15 +163,30 @@ export class Release {
 }
 
 export async function getRelease(product: string, version?: string, userAgent?: string): Promise<Release> {
-	const validVersion = semver.valid(version); // "latest" will return invalid but that's ok because we'll select it by default
-	const indexUrl = validVersion ? `${releasesUrl}/${product}/${validVersion}/index.json` : `${releasesUrl}/${product}/index.json`;
+	const validVersion = semver.validRange(version); // "latest" will return invalid but that's ok because we'll select it by default
+	const indexUrl = `${releasesUrl}/${product}/index.json`;
 	const headers = userAgent ? { 'User-Agent': userAgent } : null;
-	const body = await httpsRequest(indexUrl, { headers });
-	const response = JSON.parse(body);
-	if (!validVersion) {
-		version = Object.keys(response.versions).sort(semver.rcompare)[0];
-		return new Release(response.versions[version]);
+	try {
+		const body = await httpsRequest(indexUrl, { headers });
+		const response = JSON.parse(body);
+		let release: Release;
+		if (!validVersion) { // pick the latest release
+			version = Object.keys(response.versions).sort(semver.rcompare)[0];
+			release = new Release(response.versions[version]);
+		} else {
+			release = await matchVersion(response.versions, validVersion);
+		}
+		return release;
+	} catch (err) {
+		throw new Error(err);
+	}
+}
+
+async function matchVersion(versions: Release[], range: string): Promise<Release> {
+	const version = semver.maxSatisfying(Object.keys(versions), range);
+	if (version) {
+		return new Release(versions[version]);
 	} else {
-		return new Release(response);
+		return Promise.reject("No matching version found");
 	}
 }
