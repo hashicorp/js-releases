@@ -13,9 +13,4 @@ describe('LS installer', () => {
 		assert.strictEqual(sum, expectedSum);
 	});
 
-	// it('should find the requested version', async () => {
-	// 	const release = await getRelease('terraform', '~0.14');
-	// 	assert.strictEqual(release.name, "terraform");
-	// 	assert.strictEqual(release.version, "0.13.5");
-	// });
 });
