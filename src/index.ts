@@ -162,24 +162,27 @@ export class Release {
 	}
 }
 
-export async function getRelease(product: string, version?: string, userAgent?: string): Promise<Release> {
-	const validVersion = semver.validRange(version); // "latest" will return invalid but that's ok because we'll select it by default
+export async function getRelease(product: string, version?: string, includePrerelease?: boolean, userAgent?: string): Promise<Release> {
+	const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
 	const indexUrl = `${releasesUrl}/${product}/index.json`;
 	const headers = userAgent ? { 'User-Agent': userAgent } : null;
 	const body = await httpsRequest(indexUrl, { headers });
 	const response = JSON.parse(body);
 	let release: Release;
-	if (!validVersion) { // pick the latest release
-		version = Object.keys(response.versions).sort(semver.rcompare)[0];
+	if (!validVersion) { // pick the latest release (prereleases will be skipped for safety, set an explicit version instead)
+		const releaseVersions = Object.keys(response.versions).filter(v => !semver.prerelease(v));
+		version = releaseVersions.sort((a, b) => semver.rcompare(a, b))[0];
 		release = new Release(response.versions[version]);
 	} else {
-		release = matchVersion(response.versions, validVersion);
+		release = matchVersion(response.versions, validVersion, includePrerelease);
 	}
 	return release;
 }
 
-function matchVersion(versions: Release[], range: string): Release {
-	const version = semver.maxSatisfying(Object.keys(versions), range);
+function matchVersion(versions: Release[], range: string, includePrerelease?: boolean): Release {
+	// If a prerelease version range is given, it will match in that series (0.14-rc0, 0.14-rc1)
+	// https://www.npmjs.com/package/semver#prerelease-tags
+	const version = semver.maxSatisfying(Object.keys(versions), range, { includePrerelease });
 	if (version) {
 		return new Release(versions[version]);
 	} else {
