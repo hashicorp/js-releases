@@ -162,7 +162,7 @@ export class Release {
 	}
 }
 
-export async function getRelease(product: string, version?: string, includePrerelease?: boolean, userAgent?: string): Promise<Release> {
+export async function getRelease(product: string, version?: string, userAgent?: string, includePrerelease?: boolean): Promise<Release> {
 	const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
 	const indexUrl = `${releasesUrl}/${product}/index.json`;
 	const headers = userAgent ? { 'User-Agent': userAgent } : null;
