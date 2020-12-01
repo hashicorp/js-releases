@@ -1,3 +1,7 @@
+# 1.2.0 (2020-12-01)
+
+- Allow pre-release version ranges (#2)
+
 # 1.1.0 (2020-11-17)
 
 - Match version ranges (#1)
