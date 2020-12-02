@@ -162,6 +162,8 @@ export class Release {
 	}
 }
 
+// includePrerelease: Set to suppress the default behavior of excluding prerelease tagged versions
+// from ranges unless they are explicitly opted into.
 export async function getRelease(product: string, version?: string, userAgent?: string, includePrerelease?: boolean): Promise<Release> {
 	const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
 	const indexUrl = `${releasesUrl}/${product}/index.json`;
@@ -180,7 +182,8 @@ export async function getRelease(product: string, version?: string, userAgent?: 
 }
 
 function matchVersion(versions: Release[], range: string, includePrerelease?: boolean): Release {
-	// If a prerelease version range is given, it will match in that series (0.14-rc0, 0.14-rc1)
+	// If a prerelease version range is given, it will only match in that series (0.14-rc0, 0.14-rc1)
+	// unless includePrerelease is set to true
 	// https://www.npmjs.com/package/semver#prerelease-tags
 	const version = semver.maxSatisfying(Object.keys(versions), range, { includePrerelease });
 	if (version) {
