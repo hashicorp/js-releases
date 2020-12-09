@@ -1,3 +1,7 @@
+# 1.2.1 (2020-12-09)
+
+- Replace openpgp with fork to fix downstream bundle (#4)
+
 # 1.2.0 (2020-12-01)
 
 - Allow pre-release version ranges (#2)
