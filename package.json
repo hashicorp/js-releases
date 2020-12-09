@@ -8,7 +8,7 @@
     "compile": "tsc -b",
     "watch": "tsc -b -w",
     "test": "mocha",
-    "package": "npm run-script test && npm run-script compile"
+    "prepare": "npm run-script test && npm run-script compile"
   },
   "repository": {
     "type": "git",
