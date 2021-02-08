@@ -23,7 +23,7 @@
   "dependencies": {
     "@types/semver": "^7.3.1",
     "del": "^5.1.0",
-    "openpgp": "vordimous/openpgpjs",
+    "openpgp": "git+https://git@github.com/vordimous/openpgpjs.git#058265f3748b37b6e830e7e675cb28c8202aeded",
     "semver": "^7.3.2",
     "yauzl": "^2.10.0"
   },
