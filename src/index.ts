@@ -110,20 +110,22 @@ export class Release {
 	}
 
 	async downloadSha256Sum(buildName: string): Promise<string> {
-		const [shasumResponse, signature] = await Promise.all([
+		const [shasumsResponse, shasumsSignature] = await Promise.all([
 			httpsRequest(`${releasesUrl}/${this.name}/${this.version}/${this.shasums}`),
 			httpsRequest(`${releasesUrl}/${this.name}/${this.version}/${this.shasums_signature}`, {}, 'hex'),
 		]);
+		const publicKey = await openpgp.readKey({ armoredKey: hashiPublicKey });
+		const signature = await openpgp.readSignature({ binarySignature: Buffer.from(shasumsSignature, 'hex') });
+		const message = openpgp.Message.fromText(shasumsResponse);
 		const verified = await openpgp.verify({
-			message: openpgp.message.fromText(shasumResponse),
-			publicKeys: (await openpgp.key.readArmored(hashiPublicKey)).keys,
-			signature: await openpgp.signature.read(Buffer.from(signature, 'hex'))
+			message: message,
+			publicKeys: publicKey,
+			signature: signature
 		});
-		const { valid } = verified.signatures[0];
-		if (!valid) {
+		if (!verified) {
 			throw new Error('signature could not be verified');
 		}
-		const shasumLine = shasumResponse.split(`\n`).find(line => line.includes(buildName));
+		const shasumLine = shasumsResponse.split(`\n`).find(line => line.includes(buildName));
 		if (!shasumLine) {
 			throw new Error(`Install error: no matching SHA sum for ${buildName}`);
 		}

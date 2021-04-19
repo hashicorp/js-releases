@@ -23,14 +23,13 @@
   "dependencies": {
     "@types/semver": "^7.3.1",
     "del": "^5.1.0",
-    "openpgp": "git+https://git@github.com/vordimous/openpgpjs.git#058265f3748b37b6e830e7e675cb28c8202aeded",
+    "openpgp": "5.0.0-1",
     "semver": "^7.3.4",
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.0",
     "@types/node": "^12.12.54",
-    "@types/openpgp": "^4.4.15",
     "@types/yauzl": "^2.9.1",
     "mocha": "^8.1.1",
     "ts-node": "^9.1.1",
