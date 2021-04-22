@@ -37,7 +37,11 @@ await release.verify(installPath, build.filename);
 const destination = "/usr/local/bin"
 return release.unpack(installPath, destination)
 ```
- 
+
+## Validating releases
+
+Packages are verified using HashiCorp's public GPG key `72D7468F`. The previous key was rotated and revoked per HCSEC-2021-12 on 4/22/21. As a result, earlier versions of `js-releases` will no longer be able to verify packages.
+
 ## License
 
 [Mozilla Public License v2.0](https://github.com/hashicorp/setup-terraform/blob/master/LICENSE)
