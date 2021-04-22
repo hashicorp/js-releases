@@ -1,4 +1,5 @@
 # js-releases
+
 ## Download packages from releases.hashicorp.com
 
 js-releases is a handy tool for downloading and verifying packages from releases.hashicorp.com. You can:
@@ -6,6 +7,36 @@ js-releases is a handy tool for downloading and verifying packages from releases
  - download the package
  - verify the SHASUM and signature
  - unpack to a specified directory
+
+## Usage
+
+```
+import { Release, getRelease } from '@hashicorp/js-releases';
+
+// Setting a user agent string is optional but helpful!
+const userAgent = `Terraform-VSCode/2.1.0 VSCode/1.55.2`;
+
+// Download metadata for a release using a semver range or "latest"
+// "latest" is set by default if no range is included
+const release = await getRelease("terraform-ls", "latest", userAgent);
+
+// Include pre-releases in the semver range
+const preRelease = await getRelease("terraform-ls", "^1.0.pre-0", userAgent, true);
+
+// Select metadata for a build matching a given OS and arch
+const build = release.getBuild(os, arch);
+
+// Download the release to an install path
+const installPath = "~/Downloads"
+await release.download(build.url, installPath, userAgent);
+
+// Verify the release shasum and signature
+await release.verify(installPath, build.filename);
+
+// Unpack the release from the install path to a destination
+const destination = "/usr/local/bin"
+return release.unpack(installPath, destination)
+```
  
 ## License
 
