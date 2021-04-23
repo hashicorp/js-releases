@@ -40,7 +40,7 @@ return release.unpack(installPath, destination)
 
 ## Validating releases
 
-Packages are verified using HashiCorp's public GPG key `72D7468F`. The previous key was rotated and revoked per HCSEC-2021-12 on 4/22/21. As a result, earlier versions of `js-releases` will no longer be able to verify packages.
+Packages are verified using HashiCorp's public GPG key `72D7468F`. The previous key was rotated and revoked per [HCSEC-2021-12](https://discuss.hashicorp.com/t/hcsec-2021-12-codecov-security-event-and-hashicorp-gpg-key-exposure/23512) on 4/22/21. As a result, earlier versions of `js-releases` will no longer be able to verify packages.
 
 ## License
 
