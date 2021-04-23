@@ -27,7 +27,7 @@ const preRelease = await getRelease("terraform-ls", "^1.0.pre-0", userAgent, tru
 const build = release.getBuild(os, arch);
 
 // Download the release to an install path
-const installPath = "~/Downloads"
+const installPath = "/hc_product/downloads"
 await release.download(build.url, installPath, userAgent);
 
 // Verify the release shasum and signature
