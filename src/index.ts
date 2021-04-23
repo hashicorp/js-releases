@@ -155,7 +155,7 @@ export class Release {
 		this.builds = release.builds;
 		this.shasums = release.shasums;
 		if (release.shasums_signatures) {
-			this.shasums_signature = release.shasums_signatures.find(sig => sig.endsWith(`SHA256SUMS.${hashiPublicKeyId}.sig`));
+			this.shasums_signature = release.shasums_signatures.find(sig => sig.endsWith(`_SHA256SUMS.${hashiPublicKeyId}.sig`));
 		} else {
 			this.shasums_signature = release.shasums_signature;
 		}
