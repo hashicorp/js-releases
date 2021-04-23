@@ -14,7 +14,7 @@ js-releases is a handy tool for downloading and verifying packages from releases
 import { Release, getRelease } from '@hashicorp/js-releases';
 
 // Setting a user agent string is optional but helpful!
-const userAgent = `Terraform-VSCode/2.1.0 VSCode/1.55.2`;
+const userAgent = `Example-Program/1.0.0 js-releases/dev`;
 
 // Download metadata for a release using a semver range or "latest"
 // "latest" is set by default if no range is included
