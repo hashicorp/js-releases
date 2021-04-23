@@ -152,7 +152,11 @@ export class Release {
 		this.version = release.version;
 		this.builds = release.builds;
 		this.shasums = release.shasums;
-		this.shasums_signature = release.shasums_signatures.find(sig => sig.endsWith(`SHA256SUMS.${hashiPublicKeyId}.sig`));
+		if (release.shasums_signatures) {
+			this.shasums_signature = release.shasums_signatures.find(sig => sig.endsWith(`SHA256SUMS.${hashiPublicKeyId}.sig`));
+		} else {
+			this.shasums_signature = release.shasums_signature;
+		}
 	}
 	
 	public getBuild(platform: string, arch: string): Build {
