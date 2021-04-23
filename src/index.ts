@@ -9,6 +9,7 @@ import { httpsRequest } from './utils';
 
 const hashiPublicKeyId = '72D7468F';
 const hashiPublicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
+
 mQINBGB9+xkBEACabYZOWKmgZsHTdRDiyPJxhbuUiKX65GUWkyRMJKi/1dviVxOX
 PG6hBPtF48IFnVgxKpIb7G6NjBousAV+CuLlv5yqFKpOZEGC6sBV+Gx8Vu1CICpl
 Zm+HpQPcIzwBpN+Ar4l/exCG/f/MZq/oxGgH+TyRF3XcYDjG8dbJCpHO5nQ5Cy9h
@@ -128,6 +129,7 @@ aTS71iR7nZNZ1f8LZV2OvGE6fJVtgJ1J4Nu02K54uuIhU3tg1+7Xt+IqwRc9rbVr
 pHH/hFCYBPW2D2dxB+k2pQlg5NI+TpsXj5Zun8kRw5RtVb+dLuiH/xmxArIee8Jq
 ZF5q4h4I33PSGDdSvGXn9UMY5Isjpg==
 =7pIB
+
 -----END PGP PUBLIC KEY BLOCK-----`;
 
 const releasesUrl = "https://releases.hashicorp.com";
