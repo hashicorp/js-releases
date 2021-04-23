@@ -7,6 +7,7 @@ import * as yauzl from 'yauzl';
 
 import { httpsRequest } from './utils';
 
+const hashiPublicKeyId = '72D7468F';
 const hashiPublicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
 mQINBGB9+xkBEACabYZOWKmgZsHTdRDiyPJxhbuUiKX65GUWkyRMJKi/1dviVxOX
 PG6hBPtF48IFnVgxKpIb7G6NjBousAV+CuLlv5yqFKpOZEGC6sBV+Gx8Vu1CICpl
@@ -142,6 +143,7 @@ export class Release {
 	public builds?: any[];
 	public shasums?: string;
 	public shasums_signature?: string;
+	public shasums_signatures?: any[];
 
 	constructor(
 		release: any
@@ -150,7 +152,7 @@ export class Release {
 		this.version = release.version;
 		this.builds = release.builds;
 		this.shasums = release.shasums;
-		this.shasums_signature = release.shasums_signature;
+		this.shasums_signature = release.shasums_signatures.find(sig => sig.endsWith(`SHA256SUMS.${hashiPublicKeyId}.sig`));
 	}
 	
 	public getBuild(platform: string, arch: string): Build {
