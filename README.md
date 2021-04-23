@@ -1,4 +1,5 @@
 # js-releases
+
 ## Download packages from releases.hashicorp.com
 
 js-releases is a handy tool for downloading and verifying packages from releases.hashicorp.com. You can:
@@ -6,7 +7,41 @@ js-releases is a handy tool for downloading and verifying packages from releases
  - download the package
  - verify the SHASUM and signature
  - unpack to a specified directory
- 
+
+## Usage
+
+```
+import { Release, getRelease } from '@hashicorp/js-releases';
+
+// Setting a user agent string is optional but helpful!
+const userAgent = `Example-Program/1.0.0 js-releases/dev`;
+
+// Download metadata for a release using a semver range or "latest"
+// "latest" is set by default if no range is included
+const release = await getRelease("terraform-ls", "latest", userAgent);
+
+// Include pre-releases in the semver range
+const preRelease = await getRelease("terraform-ls", "^1.0.pre-0", userAgent, true);
+
+// Select metadata for a build matching a given OS and arch
+const build = release.getBuild(os, arch);
+
+// Download the release to an install path
+const installPath = "/hc_product/downloads"
+await release.download(build.url, installPath, userAgent);
+
+// Verify the release shasum and signature
+await release.verify(installPath, build.filename);
+
+// Unpack the release from the install path to a destination
+const destination = "/usr/local/bin"
+return release.unpack(installPath, destination)
+```
+
+## Validating releases
+
+Packages are verified using HashiCorp's public GPG key `72D7468F`. The previous key was rotated and revoked per [HCSEC-2021-12](https://discuss.hashicorp.com/t/hcsec-2021-12-codecov-security-event-and-hashicorp-gpg-key-exposure/23512) on 4/22/21. As a result, earlier versions of `js-releases` will no longer be able to verify packages.
+
 ## License
 
 [Mozilla Public License v2.0](https://github.com/hashicorp/setup-terraform/blob/master/LICENSE)
