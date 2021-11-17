@@ -215,10 +215,10 @@ export class Release {
 		]);
 		const publicKey = await openpgp.readKey({ armoredKey: hashiPublicKey });
 		const signature = await openpgp.readSignature({ binarySignature: Buffer.from(shasumsSignature, 'hex') });
-		const message = openpgp.Message.fromText(shasumsResponse);
+		const message = await openpgp.createMessage({ text: shasumsResponse });
 		const verified = await openpgp.verify({
 			message: message,
-			publicKeys: publicKey,
+			verificationKeys: publicKey,
 			signature: signature
 		});
 		if (!verified) {
