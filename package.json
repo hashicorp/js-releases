@@ -22,8 +22,7 @@
   "homepage": "https://github.com/hashicorp/js-releases#readme",
   "dependencies": {
     "@types/semver": "^7.3.1",
-    "del": "^5.1.0",
-    "openpgp": "5.0.0-1",
+    "openpgp": "5.0.1",
     "semver": "^7.3.5",
     "yauzl": "^2.10.0"
   },
