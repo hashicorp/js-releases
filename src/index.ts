@@ -1,11 +1,9 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
-import * as https from 'https';
 import * as openpgp from 'openpgp';
 import * as semver from 'semver';
 import * as yauzl from 'yauzl';
-
-import { httpsRequest } from './utils';
+import { request } from './utils';
 
 const hashiPublicKeyId = '72D7468F';
 const hashiPublicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -167,23 +165,15 @@ export class Release {
 
 	public download(downloadUrl: string, installPath: string, identifier: string): Promise<void> {
 		const headers = { 'User-Agent': identifier };
-		return new Promise<void>((resolve, reject) => {
-			https.request(downloadUrl, { headers: headers }, (response) => {
-				if (response.statusCode === 301 || response.statusCode === 302) { // redirect for CDN
-					const redirectUrl: string = response.headers.location;
-					return resolve(this.download(redirectUrl, installPath, identifier));
-				}
-				if (response.statusCode !== 200) {
-					return reject(response.statusMessage);
-				}
-				response
-					.on('error', reject)
-					.on('end', resolve)
-					.pipe(fs.createWriteStream(installPath))
-					.on('error', reject);
-			})
-				.on('error', reject)
-				.end();
+
+		return new Promise<void>(async (resolve, reject) => {
+			try {
+				const result  = await request(downloadUrl, {headers: {...headers}, responseType: 'stream'});
+				result.pipe(fs.createWriteStream(installPath))
+				resolve();
+			} catch (e) {
+				return reject(e.message);
+			}
 		});
 	}
 
@@ -210,8 +200,8 @@ export class Release {
 
 	async downloadSha256Sum(buildName: string): Promise<string> {
 		const [shasumsResponse, shasumsSignature] = await Promise.all([
-			httpsRequest(`${releasesUrl}/${this.name}/${this.version}/${this.shasums}`),
-			httpsRequest(`${releasesUrl}/${this.name}/${this.version}/${this.shasums_signature}`, {}, 'hex'),
+			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums}`),
+			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums_signature}`),
 		]);
 		const publicKey = await openpgp.readKey({ armoredKey: hashiPublicKey });
 		const signature = await openpgp.readSignature({ binarySignature: Buffer.from(shasumsSignature, 'hex') });
@@ -269,8 +259,7 @@ export async function getRelease(product: string, version?: string, userAgent?: 
 	const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
 	const indexUrl = `${releasesUrl}/${product}/index.json`;
 	const headers = userAgent ? { 'User-Agent': userAgent } : null;
-	const body = await httpsRequest(indexUrl, { headers });
-	const response = JSON.parse(body);
+	const response = await request(indexUrl, { headers });
 	let release: Release;
 	if (!validVersion) { // pick the latest release (prereleases will be skipped for safety, set an explicit version instead)
 		const releaseVersions = Object.keys(response.versions).filter(v => !semver.prerelease(v));

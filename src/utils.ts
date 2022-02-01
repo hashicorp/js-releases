@@ -1,20 +1,25 @@
-import * as https from 'https';
+import axiosBase, { AxiosRequestConfig } from "axios";
+const ProxyAgent = require("proxy-agent");
 
-export function httpsRequest(url: string, options: https.RequestOptions = {}, encoding = 'utf8'): Promise<string> {
-	return new Promise((resolve, reject) => {
-		https.request(url, options, res => {
-			if (res.statusCode === 301 || res.statusCode === 302) { // follow redirects
-				return resolve(httpsRequest(res.headers.location, options, encoding));
-			}
-			if (res.statusCode !== 200) {
-				return reject(res.statusMessage);
-			}
-			let body = '';
-			res.setEncoding(encoding)
-				.on('data', data => body += data)
-				.on('end', () => resolve(body));
-		})
-			.on('error', reject)
-			.end();
-	});
+const httpProxy = process.env["HTTP_PROXY"] || process.env["http_proxy"];
+const httpsProxy = process.env["HTTPS_PROXY"] || process.env["https_proxy"];
+
+let proxyConf = {};
+
+if (httpProxy || httpsProxy) {
+  proxyConf = {
+    proxy: false,
+    httpAgent: httpProxy ? new ProxyAgent(httpProxy) : undefined,
+    httpsAgent: httpsProxy ? new ProxyAgent(httpsProxy) : undefined,
+  };
+}
+
+const axios = axiosBase.create({ ...proxyConf });
+
+export async function request<T = any>(
+  url: string,
+  options: AxiosRequestConfig = {}
+): Promise<T> {
+  const result = await axios.get(url, { ...options });
+  return result.data;
 }

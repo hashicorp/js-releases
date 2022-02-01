@@ -8,6 +8,16 @@ js-releases is a handy tool for downloading and verifying packages from releases
  - verify the SHASUM and signature
  - unpack to a specified directory
 
+## Environment variables
+
+The downloader can be configured with environment variables.
+Current available vars:
+
+| Parameter                   | Description                                              | Default |
+| --------------------------- | -------------------------------------------------------- | ------- |
+| `HTTP_PROXY`/`http_proxy`   | If configured will set the HTTP_PROXY to download with.  | -       |
+| `HTTPS_PROXY`/`https_proxy` | If configured will set the HTTPS_PROXY to download with. | -       |
+
 ## Usage
 
 ```
