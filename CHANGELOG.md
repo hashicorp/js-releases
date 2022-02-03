@@ -6,7 +6,8 @@ ENHANCEMENT:
 
 DEPENDENCIES:
 
-- Upgrade openpgpjs to v5.0.1 stable ([#12](https://github.com/hashicorp/js-releases/pull/12))
+- Bump openpgpjs to v5.1.0 ([#15](https://github.com/hashicorp/js-releases/pull/15))
+- Upgrade openpgpjs to v5.0.1 stable and modify usage ([#12](https://github.com/hashicorp/js-releases/pull/12))
 
 # 1.4.0 (2021-04-23)
 
