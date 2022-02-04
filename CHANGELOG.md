@@ -1,3 +1,14 @@
+# 1.5.0 (2022-02-07)
+
+ENHANCEMENT:
+
+- Implement Proxy usage ([#11](https://github.com/hashicorp/js-releases/pull/11))
+
+DEPENDENCIES:
+
+- Bump openpgpjs to v5.1.0 ([#15](https://github.com/hashicorp/js-releases/pull/15))
+- Upgrade openpgpjs to v5.0.1 stable and modify usage ([#12](https://github.com/hashicorp/js-releases/pull/12))
+
 # 1.4.0 (2021-04-23)
 
 Security:
