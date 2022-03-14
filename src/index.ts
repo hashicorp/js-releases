@@ -133,60 +133,62 @@ ZF5q4h4I33PSGDdSvGXn9UMY5Isjpg==
 
 -----END PGP PUBLIC KEY BLOCK-----`;
 
-const releasesUrl = "https://releases.hashicorp.com";
+const releasesUrl = 'https://releases.hashicorp.com';
 
 interface Build {
-	url: string,
-	filename: string
+  url: string;
+  filename: string;
 }
 
 export class Release {
-	public name: string;
-	public version: string;
-	public builds?: any[];
-	public shasums?: string;
-	public shasums_signature?: string;
-	public shasums_signatures?: any[];
+  public name: string;
+  public version: string;
+  public builds?: any[];
+  public shasums?: string;
+  public shasums_signature?: string;
+  public shasums_signatures?: any[];
 
-	constructor(
-		release: any
-	) {
-		this.name = release.name;
-		this.version = release.version;
-		this.builds = release.builds;
-		this.shasums = release.shasums;
-		if (release.shasums_signatures) {
-			this.shasums_signature = release.shasums_signatures.find(sig => sig.endsWith(`_SHA256SUMS.${hashiPublicKeyId}.sig`));
-		} else {
-			this.shasums_signature = release.shasums_signature;
-		}
-	}
+  constructor(release: any) {
+    this.name = release.name;
+    this.version = release.version;
+    this.builds = release.builds;
+    this.shasums = release.shasums;
+    if (release.shasums_signatures) {
+      this.shasums_signature = release.shasums_signatures.find((sig) =>
+        sig.endsWith(`_SHA256SUMS.${hashiPublicKeyId}.sig`),
+      );
+    } else {
+      this.shasums_signature = release.shasums_signature;
+    }
+  }
 
-	public getBuild(platform: string, arch: string): Build {
-		return this.builds.find(b => b.os === platform && b.arch === arch);
-	}
+  public getBuild(platform: string, arch: string): Build {
+    return this.builds.find((b) => b.os === platform && b.arch === arch);
+  }
 
-	public async download(downloadUrl: string, installPath: string, identifier: string): Promise<void> {
-		const headers = { 'User-Agent': identifier };
-		const writer = fs.createWriteStream(installPath);
+  public async download(downloadUrl: string, installPath: string, identifier: string): Promise<void> {
+    const headers = { 'User-Agent': identifier };
+    const writer = fs.createWriteStream(installPath);
 
-		const result = await request(downloadUrl, { headers: { ...headers }, responseType: 'stream' });
-		result.pipe(writer);
-		await finished(writer);
-	}
+    const result = await request(downloadUrl, { headers: { ...headers }, responseType: 'stream' });
+    result.pipe(writer);
+    await finished(writer);
+  }
 
-	public async verify(pkg: string, buildName: string): Promise<void> {
-		const [localSum, remoteSum] = await Promise.all([
-			this.calculateFileSha256Sum(pkg),
-			this.downloadSha256Sum(buildName)
-		]);
-		if (remoteSum !== localSum) {
-			throw new Error(`Install error: SHA sum for ${buildName} does not match.\n` +
-				`(expected: ${remoteSum} calculated: ${localSum})`);
-		}
-	}
+  public async verify(pkg: string, buildName: string): Promise<void> {
+    const [localSum, remoteSum] = await Promise.all([
+      this.calculateFileSha256Sum(pkg),
+      this.downloadSha256Sum(buildName),
+    ]);
+    if (remoteSum !== localSum) {
+      throw new Error(
+        `Install error: SHA sum for ${buildName} does not match.\n` +
+          `(expected: ${remoteSum} calculated: ${localSum})`,
+      );
+    }
+  }
 
-	calculateFileSha256Sum(path: string): Promise<string> {
+  calculateFileSha256Sum(path: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
 			const hash = crypto.createHash('sha256');
 			fs.createReadStream(path)
@@ -196,91 +198,97 @@ export class Release {
 		});
 	}
 
-	async downloadSha256Sum(buildName: string): Promise<string> {
-		const [shasumsResponse, shasumsSignature] = await Promise.all([
-			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums}`, {
-				responseType: 'text'
-			}),
-			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums_signature}`, {
-				responseType: 'arraybuffer'
-			}),
-		]);
-		const publicKey = await openpgp.readKey({ armoredKey: hashiPublicKey });
-		const signature = await openpgp.readSignature({ binarySignature: Buffer.from(shasumsSignature, 'hex') });
-		const message = await openpgp.createMessage({ text: shasumsResponse });
-		const verified = await openpgp.verify({
-			message: message,
-			verificationKeys: publicKey,
-			signature: signature
-		});
-		if (!verified) {
-			throw new Error('signature could not be verified');
-		}
-		const shasumLine = shasumsResponse.split(`\n`).find(line => line.includes(buildName));
-		if (!shasumLine) {
-			throw new Error(`Install error: no matching SHA sum for ${buildName}`);
-		}
+  async downloadSha256Sum(buildName: string): Promise<string> {
+    const [shasumsResponse, shasumsSignature] = await Promise.all([
+      request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums}`, {
+        responseType: 'text',
+      }),
+      request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums_signature}`, {
+        responseType: 'arraybuffer',
+      }),
+    ]);
+    const publicKey = await openpgp.readKey({ armoredKey: hashiPublicKey });
+    const signature = await openpgp.readSignature({ binarySignature: Buffer.from(shasumsSignature, 'hex') });
+    const message = await openpgp.createMessage({ text: shasumsResponse });
+    const verified = await openpgp.verify({
+      message: message,
+      verificationKeys: publicKey,
+      signature: signature,
+    });
+    if (!verified) {
+      throw new Error('signature could not be verified');
+    }
+    const shasumLine = shasumsResponse.split(`\n`).find((line) => line.includes(buildName));
+    if (!shasumLine) {
+      throw new Error(`Install error: no matching SHA sum for ${buildName}`);
+    }
 
-		return shasumLine.split("  ")[0];
-	}
+    return shasumLine.split('  ')[0];
+  }
 
-	public unpack(directory: string, pkgName: string): Promise<void> {
-		return new Promise<void>((resolve, reject) => {
-			let executable: string;
-			yauzl.open(pkgName, { lazyEntries: true }, (err, zipfile) => {
-				if (err) {
-					return reject(err);
-				}
-				zipfile.readEntry();
-				zipfile.on('entry', (entry) => {
-					zipfile.openReadStream(entry, (err, readStream) => {
-						if (err) {
-							return reject(err);
-						}
-						readStream.on('end', () => {
-							zipfile.readEntry(); // Close it
-						});
+  public unpack(directory: string, pkgName: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      let executable: string;
+      yauzl.open(pkgName, { lazyEntries: true }, (err, zipfile) => {
+        if (err) {
+          return reject(err);
+        }
+        zipfile.readEntry();
+        zipfile.on('entry', (entry) => {
+          zipfile.openReadStream(entry, (err, readStream) => {
+            if (err) {
+              return reject(err);
+            }
+            readStream.on('end', () => {
+              zipfile.readEntry(); // Close it
+            });
 
-						executable = `${directory}/${entry.fileName}`;
-						const destination = fs.createWriteStream(executable);
-						readStream.pipe(destination);
-					});
-				});
-				zipfile.on('close', () => {
-					fs.chmodSync(executable, '755');
-					return resolve();
-				});
-			});
-		});
-	}
+            executable = `${directory}/${entry.fileName}`;
+            const destination = fs.createWriteStream(executable);
+            readStream.pipe(destination);
+          });
+        });
+        zipfile.on('close', () => {
+          fs.chmodSync(executable, '755');
+          return resolve();
+        });
+      });
+    });
+  }
 }
 
 // includePrerelease: Set to suppress the default behavior of excluding prerelease tagged versions
 // from ranges unless they are explicitly opted into.
-export async function getRelease(product: string, version?: string, userAgent?: string, includePrerelease?: boolean): Promise<Release> {
-	const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
-	const indexUrl = `${releasesUrl}/${product}/index.json`;
-	const headers = userAgent ? { 'User-Agent': userAgent } : null;
-	const response = await request(indexUrl, { headers });
-	let release: Release;
-	if (!validVersion) { // pick the latest release (prereleases will be skipped for safety, set an explicit version instead)
-		const releaseVersions = Object.keys(response.versions).filter(v => !semver.prerelease(v));
-		version = releaseVersions.sort((a, b) => semver.rcompare(a, b))[0];
-		release = new Release(response.versions[version]);
-	} else {
-		release = matchVersion(response.versions, validVersion, includePrerelease);
-	}
-	return release;
+export async function getRelease(
+  product: string,
+  version?: string,
+  userAgent?: string,
+  includePrerelease?: boolean,
+): Promise<Release> {
+  const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
+  const indexUrl = `${releasesUrl}/${product}/index.json`;
+  const headers = userAgent ? { 'User-Agent': userAgent } : null;
+  const response = await request(indexUrl, { headers });
+  let release: Release;
+  if (!validVersion) {
+    // pick the latest release (prereleases will be skipped for safety, set an explicit version instead)
+    const releaseVersions = Object.keys(response.versions).filter((v) => !semver.prerelease(v));
+    version = releaseVersions.sort((a, b) => semver.rcompare(a, b))[0];
+    release = new Release(response.versions[version]);
+  } else {
+    release = matchVersion(response.versions, validVersion, includePrerelease);
+  }
+  return release;
 }
 
 function matchVersion(versions: Release[], range: string, includePrerelease?: boolean): Release {
-	// If a prerelease version range is given, it will only match in that series (0.14-rc0, 0.14-rc1)
-	// unless includePrerelease is set to true
-	// https://www.npmjs.com/package/semver#prerelease-tags
-	const version = semver.maxSatisfying(Object.keys(versions), range, { includePrerelease });
-	if (version) {
-		return new Release(versions[version]);
-	} else {
-		throw new Error("No matching version found");
-	}
+  // If a prerelease version range is given, it will only match in that series (0.14-rc0, 0.14-rc1)
+  // unless includePrerelease is set to true
+  // https://www.npmjs.com/package/semver#prerelease-tags
+  const version = semver.maxSatisfying(Object.keys(versions), range, { includePrerelease });
+  if (version) {
+    return new Release(versions[version]);
+  } else {
+    throw new Error('No matching version found');
+  }
 }
