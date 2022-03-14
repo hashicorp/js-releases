@@ -2,9 +2,12 @@ import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as openpgp from 'openpgp';
 import * as semver from 'semver';
+import * as stream from 'stream';
 import * as yauzl from 'yauzl';
+import { promisify } from 'util';
 import { request } from './utils';
 
+const finished = promisify(stream.finished);
 const hashiPublicKeyId = '72D7468F';
 const hashiPublicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -163,18 +166,13 @@ export class Release {
 		return this.builds.find(b => b.os === platform && b.arch === arch);
 	}
 
-	public download(downloadUrl: string, installPath: string, identifier: string): Promise<void> {
+	public async download(downloadUrl: string, installPath: string, identifier: string): Promise<void> {
 		const headers = { 'User-Agent': identifier };
+		const writer = fs.createWriteStream(installPath);
 
-		return new Promise<void>(async (resolve, reject) => {
-			try {
-				const result = await request(downloadUrl, { headers: { ...headers }, responseType: 'stream' });
-				result.pipe(fs.createWriteStream(installPath))
-				resolve();
-			} catch (e) {
-				return reject(e.message);
-			}
-		});
+		const result = await request(downloadUrl, { headers: { ...headers }, responseType: 'stream' });
+		result.pipe(writer);
+		await finished(writer);
 	}
 
 	public async verify(pkg: string, buildName: string): Promise<void> {

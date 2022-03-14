@@ -41,13 +41,11 @@ describe('LS installer', () => {
 	});
 
 	it('should download the correct sha256 sum', async () => {
-		const expectedSum =
-			'8629ccc47ee8d4dfe6d23efb93b293948a088a936180d07d3f2ed118f6dd64a5';
+		const expectedSum = '8629ccc47ee8d4dfe6d23efb93b293948a088a936180d07d3f2ed118f6dd64a5';
 
 		const remoteSum = await release.downloadSha256Sum(
 			release.builds[0].filename
 		);
-
 		assert.strictEqual(remoteSum, expectedSum);
 	});
 
@@ -62,5 +60,5 @@ describe('LS installer', () => {
 		fs.rmSync(tmpDir, {
 			recursive: true
 		});
-	})
+	}).timeout(20 * 1000) // increase timeout for file download
 });
