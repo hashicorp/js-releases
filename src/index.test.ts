@@ -7,7 +7,7 @@ import * as tempy from 'tempy';
 import { Release } from './index';
 
 describe('LS installer', () => {
-	let release;
+	let release: Release;
 
 	before(() => {
 		release = new Release({
