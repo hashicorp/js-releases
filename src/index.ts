@@ -158,7 +158,7 @@ export class Release {
 			this.shasums_signature = release.shasums_signature;
 		}
 	}
-	
+
 	public getBuild(platform: string, arch: string): Build {
 		return this.builds.find(b => b.os === platform && b.arch === arch);
 	}
@@ -168,7 +168,7 @@ export class Release {
 
 		return new Promise<void>(async (resolve, reject) => {
 			try {
-				const result  = await request(downloadUrl, {headers: {...headers}, responseType: 'stream'});
+				const result = await request(downloadUrl, { headers: { ...headers }, responseType: 'stream' });
 				result.pipe(fs.createWriteStream(installPath))
 				resolve();
 			} catch (e) {
@@ -200,8 +200,12 @@ export class Release {
 
 	async downloadSha256Sum(buildName: string): Promise<string> {
 		const [shasumsResponse, shasumsSignature] = await Promise.all([
-			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums}`),
-			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums_signature}`),
+			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums}`, {
+				responseType: 'text'
+			}),
+			request(`${releasesUrl}/${this.name}/${this.version}/${this.shasums_signature}`, {
+				responseType: 'arraybuffer'
+			}),
 		]);
 		const publicKey = await openpgp.readKey({ armoredKey: hashiPublicKey });
 		const signature = await openpgp.readSignature({ binarySignature: Buffer.from(shasumsSignature, 'hex') });
