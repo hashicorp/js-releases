@@ -1,3 +1,13 @@
+# 1.5.1 (2022-03-17)
+
+BUG FIXES:
+
+ - Fix `download` and `verify` ([#27](https://github.com/hashicorp/js-releases/pull/27))
+
+INTERNAL:
+
+ - Add prettier and format code ([#28](https://github.com/hashicorp/js-releases/pull/28))
+
 # 1.5.0 (2022-02-07)
 
 ENHANCEMENT:
