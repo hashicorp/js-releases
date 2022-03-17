@@ -189,14 +189,14 @@ export class Release {
   }
 
   calculateFileSha256Sum(path: string): Promise<string> {
-		return new Promise<string>((resolve, reject) => {
-			const hash = crypto.createHash('sha256');
-			fs.createReadStream(path)
-				.on('error', reject)
-				.on('data', data => hash.update(data))
-				.on('end', () => resolve(hash.digest('hex')));
-		});
-	}
+    return new Promise<string>((resolve, reject) => {
+      const hash = crypto.createHash('sha256');
+      fs.createReadStream(path)
+        .on('error', reject)
+        .on('data', (data) => hash.update(data))
+        .on('end', () => resolve(hash.digest('hex')));
+    });
+  }
 
   async downloadSha256Sum(buildName: string): Promise<string> {
     const [shasumsResponse, shasumsSignature] = await Promise.all([
