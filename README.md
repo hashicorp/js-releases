@@ -1,26 +1,33 @@
 # js-releases
 
+[![Run tests](https://github.com/hashicorp/js-releases/actions/workflows/test.yml/badge.svg)](https://github.com/hashicorp/js-releases/actions/workflows/test.yml)
+[![Publish](https://github.com/hashicorp/js-releases/actions/workflows/publish.yml/badge.svg)](https://github.com/hashicorp/js-releases/actions/workflows/publish.yml)
+
 ## Download packages from releases.hashicorp.com
 
-js-releases is a handy tool for downloading and verifying packages from releases.hashicorp.com. You can:
- - fetch metadata for a given release (or latest)
- - download the package
- - verify the SHASUM and signature
- - unpack to a specified directory
+`js-releases` is a handy tool for downloading and verifying packages from [releases.hashicorp.com](https://releases.hashicorp.com/).
+
+You can:
+
+- fetch metadata for a given release (or latest)
+- download the package
+- verify the SHASUM and signature
+- unpack to a specified directory
 
 ## Environment variables
 
 The downloader can be configured with environment variables.
-Current available vars:
 
-| Parameter                   | Description                                              | Default |
-| --------------------------- | -------------------------------------------------------- | ------- |
-| `HTTP_PROXY`/`http_proxy`   | If configured will set the HTTP_PROXY to download with.  | -       |
-| `HTTPS_PROXY`/`https_proxy` | If configured will set the HTTPS_PROXY to download with. | -       |
+Currently available variables:
+
+| Environment variable           | Description                                                    | Default |
+|:-------------------------------|:---------------------------------------------------------------|:--------|
+| `HTTP_PROXY` \| `http_proxy`   | If configured will set the HTTP proxy to fetch/download with.  | -       |
+| `HTTPS_PROXY` \| `https_proxy` | If configured will set the HTTPS proxy to fetch/download with. | -       |
 
 ## Usage
 
-```
+```js
 import { Release, getRelease } from '@hashicorp/js-releases';
 
 // Setting a user agent string is optional but helpful!
@@ -50,7 +57,7 @@ return release.unpack(installPath, destination)
 
 ## Validating releases
 
-Packages are verified using HashiCorp's public GPG key `72D7468F`. The previous key was rotated and revoked per [HCSEC-2021-12](https://discuss.hashicorp.com/t/hcsec-2021-12-codecov-security-event-and-hashicorp-gpg-key-exposure/23512) on 4/22/21. As a result, earlier versions of `js-releases` will no longer be able to verify packages.
+Packages are verified using HashiCorp's public GPG key `72D7468F`. The previous key was rotated and revoked per [HCSEC-2021-12](https://discuss.hashicorp.com/t/hcsec-2021-12-codecov-security-event-and-hashicorp-gpg-key-exposure/23512) on 2021-04-22. As a result, earlier versions of `js-releases` will no longer be able to verify packages.
 
 ## License
 
