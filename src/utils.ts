@@ -1,16 +1,15 @@
 import axiosBase, { AxiosRequestConfig } from 'axios';
-const ProxyAgent = require('proxy-agent');
+const HttpsProxyAgent = require('https-proxy-agent');
 
 const httpProxy = process.env['HTTP_PROXY'] || process.env['http_proxy'];
 const httpsProxy = process.env['HTTPS_PROXY'] || process.env['https_proxy'];
 
 let proxyConf = {};
-
 if (httpProxy || httpsProxy) {
   proxyConf = {
     proxy: false,
-    httpAgent: httpProxy ? new ProxyAgent(httpProxy) : undefined,
-    httpsAgent: httpsProxy ? new ProxyAgent(httpsProxy) : undefined,
+    httpAgent: httpProxy ? new HttpsProxyAgent(httpProxy) : undefined,
+    httpsAgent: httpsProxy ? new HttpsProxyAgent(httpsProxy) : undefined,
   };
 }
 
