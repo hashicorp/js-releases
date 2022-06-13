@@ -1,3 +1,28 @@
+# 1.6.0 (2022-06-14)
+
+BUG FIXES:
+
+* Swap `proxy-agent` with `https-proxy-agent` to fix `ftp` package warning by @magnetikonline in https://github.com/hashicorp/js-releases/pull/43
+
+ENHANCEMENT:
+
+* Workflow and `README.md` tweaks by @magnetikonline in https://github.com/hashicorp/js-releases/pull/44
+
+INTERNAL:
+
+* Bump @types/yauzl from 2.9.2 to 2.10.0 by @dependabot in https://github.com/hashicorp/js-releases/pull/34
+* Bump typescript from 4.6.2 to 4.6.3 by @dependabot in https://github.com/hashicorp/js-releases/pull/31
+* Bump prettier from 2.6.0 to 2.6.2 by @dependabot in https://github.com/hashicorp/js-releases/pull/32
+* Bump semver from 7.3.5 to 7.3.6 by @dependabot in https://github.com/hashicorp/js-releases/pull/33
+* Bump semver from 7.3.6 to 7.3.7 by @dependabot in https://github.com/hashicorp/js-releases/pull/35
+* Bump @types/node from 14.18.12 to 14.18.13 by @dependabot in https://github.com/hashicorp/js-releases/pull/36
+* Bump @types/mocha from 9.1.0 to 9.1.1 by @dependabot in https://github.com/hashicorp/js-releases/pull/37
+* Bump @types/node from 14.18.13 to 14.18.14 by @dependabot in https://github.com/hashicorp/js-releases/pull/38
+* Bump @types/node from 14.18.14 to 14.18.15 by @dependabot in https://github.com/hashicorp/js-releases/pull/39
+* Bump @types/node from 14.18.15 to 14.18.16 by @dependabot in https://github.com/hashicorp/js-releases/pull/40
+* Bump @types/node from 14.18.16 to 14.18.18 by @dependabot in https://github.com/hashicorp/js-releases/pull/47
+* Bump @types/node from 14.18.18 to 14.18.21 by @dependabot in https://github.com/hashicorp/js-releases/pull/51
+
 # 1.5.1 (2022-03-17)
 
 BUG FIXES:
