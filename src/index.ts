@@ -272,7 +272,9 @@ export async function getRelease(
   let release: Release;
   if (!validVersion) {
     // pick the latest release (prereleases will be skipped for safety, set an explicit version instead)
-    const releaseVersions = Object.keys(response.versions).filter((v) => !semver.prerelease(v));
+    const releaseVersions = Object.keys(response.versions)
+      .filter((v) => semver.valid(v) !== null)
+      .filter((v) => !semver.prerelease(v));
     version = releaseVersions.sort((a, b) => semver.rcompare(a, b))[0];
     release = new Release(response.versions[version]);
   } else {
