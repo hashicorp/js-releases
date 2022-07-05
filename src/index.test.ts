@@ -8,7 +8,7 @@ import { Release } from './index';
 describe('LS installer', () => {
   let release: Release;
 
-  before(() => {
+  beforeAll(() => {
     release = new Release({
       name: 'terraform-ls',
       version: '0.25.2',
@@ -43,16 +43,20 @@ describe('LS installer', () => {
     assert.strictEqual(remoteSum, expectedSum);
   });
 
-  it('should download the release', async () => {
-    const build = release.getBuild('darwin', 'amd64');
-    const tmpDir = tempy.directory();
-    const zipFile = path.resolve(tmpDir, `terraform-ls_v${release.version}.zip`);
+  it(
+    'should download the release',
+    async () => {
+      const build = release.getBuild('darwin', 'amd64');
+      const tmpDir = tempy.directory();
+      const zipFile = path.resolve(tmpDir, `terraform-ls_v${release.version}.zip`);
 
-    await release.download(build.url, zipFile, 'js-releases/mocha-test');
-    await release.verify(zipFile, build.filename);
+      await release.download(build.url, zipFile, 'js-releases/mocha-test');
+      await release.verify(zipFile, build.filename);
 
-    fs.rmSync(tmpDir, {
-      recursive: true,
-    });
-  }).timeout(20 * 1000); // increase timeout for file download
+      fs.rmSync(tmpDir, {
+        recursive: true,
+      });
+    },
+    20 * 1000, // increase timeout for file download
+  );
 });
