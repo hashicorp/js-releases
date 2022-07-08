@@ -111,4 +111,22 @@ describe('getRelease', () => {
     const version = '1.2.7';
     await expect(getRelease(name, version)).rejects.toThrow('No matching version found');
   });
+
+  it('should filter invalid versions', async () => {
+    jest.spyOn(utils, 'request').mockImplementation(async () => ({
+      name,
+      versions: {
+        '1.2.6.1+ent': { name, version: '1.2.6.1+ent' },
+        '1.2.7': { name, version: '1.2.7' },
+        '1.5.0': { name, version: '1.5.0' },
+      },
+    }));
+
+    const version = '1.2.7';
+    const release = await getRelease(name, version);
+
+    expect(release).toBeInstanceOf(Release);
+    expect(release.name).toBe(name);
+    expect(release.version).toBe(version);
+  });
 });

@@ -268,22 +268,29 @@ export async function getRelease(
   const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
   const indexUrl = `${releasesUrl}/${product}/index.json`;
   const headers = userAgent ? { 'User-Agent': userAgent } : null;
-  const response = await request(indexUrl, { headers });
-  let release: Release;
+  const response = await request<{ name: string; versions: Record<string, Release> }>(indexUrl, { headers });
+
+  const versions: Record<string, Release> = Object.assign(
+    {},
+    ...Object.keys(response.versions)
+      .filter((key) => semver.valid(key) !== null || key === 'latest')
+      .map((key) => ({ [key]: response.versions[key] })),
+  );
+
   if (!validVersion) {
-    // pick the latest release (prereleases will be skipped for safety, set an explicit version instead)
-    const releaseVersions = Object.keys(response.versions)
-      .filter((v) => semver.valid(v) !== null)
-      .filter((v) => !semver.prerelease(v));
-    version = releaseVersions.sort((a, b) => semver.rcompare(a, b))[0];
-    release = new Release(response.versions[version]);
-  } else {
-    release = matchVersion(response.versions, validVersion, includePrerelease);
+    // pick the latest release (prereleases will be skipped for safety, set an
+    // explicit version instead)
+    const releaseVersion = Object.keys(versions)
+      .filter((v) => !semver.prerelease(v))
+      .sort((a, b) => semver.rcompare(a, b))[0];
+
+    return new Release(versions[releaseVersion]);
   }
-  return release;
+
+  return matchVersion(versions, validVersion, includePrerelease);
 }
 
-function matchVersion(versions: Release[], range: string, includePrerelease?: boolean): Release {
+function matchVersion(versions: Record<string, Release>, range: string, includePrerelease?: boolean): Release {
   // If a prerelease version range is given, it will only match in that series (0.14-rc0, 0.14-rc1)
   // unless includePrerelease is set to true
   // https://www.npmjs.com/package/semver#prerelease-tags
