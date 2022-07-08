@@ -3,12 +3,13 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as tempy from 'tempy';
 
-import { Release } from './index';
+import { getRelease, Release } from './index';
+import * as utils from './utils';
 
 describe('LS installer', () => {
   let release: Release;
 
-  before(() => {
+  beforeAll(() => {
     release = new Release({
       name: 'terraform-ls',
       version: '0.25.2',
@@ -43,16 +44,71 @@ describe('LS installer', () => {
     assert.strictEqual(remoteSum, expectedSum);
   });
 
-  it('should download the release', async () => {
-    const build = release.getBuild('darwin', 'amd64');
-    const tmpDir = tempy.directory();
-    const zipFile = path.resolve(tmpDir, `terraform-ls_v${release.version}.zip`);
+  it(
+    'should download the release',
+    async () => {
+      const build = release.getBuild('darwin', 'amd64');
+      const tmpDir = tempy.directory();
+      const zipFile = path.resolve(tmpDir, `terraform-ls_v${release.version}.zip`);
 
-    await release.download(build.url, zipFile, 'js-releases/mocha-test');
-    await release.verify(zipFile, build.filename);
+      await release.download(build.url, zipFile, 'js-releases/mocha-test');
+      await release.verify(zipFile, build.filename);
 
-    fs.rmSync(tmpDir, {
-      recursive: true,
-    });
-  }).timeout(20 * 1000); // increase timeout for file download
+      fs.rmSync(tmpDir, {
+        recursive: true,
+      });
+    },
+    20 * 1000, // increase timeout for file download
+  );
+});
+
+describe('getRelease', () => {
+  const name = 'vault';
+
+  it('should return latest releases when called without a version', async () => {
+    const request = jest.spyOn(utils, 'request').mockImplementation(async () => ({
+      name,
+      versions: {
+        '0.11.0': { name, version: '0.11.0' },
+        '1.5.0': { name, version: '1.5.0' },
+        '1.2.7': { name, version: '1.2.7' },
+      },
+    }));
+
+    const release = await getRelease(name);
+    expect(request).toHaveBeenCalledWith('https://releases.hashicorp.com/vault/index.json', { headers: null });
+    expect(request).toHaveBeenCalledTimes(1);
+
+    expect(release).toBeInstanceOf(Release);
+    expect(release.name).toBe(name);
+    expect(release.version).toBe('1.5.0');
+  });
+
+  it('should return the matching version', async () => {
+    jest.spyOn(utils, 'request').mockImplementation(async () => ({
+      name,
+      versions: {
+        '0.11.0': { name, version: '0.11.0' },
+        '1.2.7': { name, version: '1.2.7' },
+        '1.5.0': { name, version: '1.5.0' },
+      },
+    }));
+
+    const version = '1.2.7';
+    const release = await getRelease(name, version);
+
+    expect(release).toBeInstanceOf(Release);
+    expect(release.name).toBe(name);
+    expect(release.version).toBe(version);
+  });
+
+  it('should throw if no version is found', async () => {
+    jest.spyOn(utils, 'request').mockImplementation(async () => ({
+      name,
+      versions: {},
+    }));
+
+    const version = '1.2.7';
+    await expect(getRelease(name, version)).rejects.toThrow('No matching version found');
+  });
 });
