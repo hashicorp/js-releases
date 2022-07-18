@@ -122,11 +122,10 @@ describe('getRelease', () => {
       },
     }));
 
-    const version = '1.2.7';
-    const release = await getRelease(name, version);
+    const release = await getRelease(name);
 
     expect(release).toBeInstanceOf(Release);
     expect(release.name).toBe(name);
-    expect(release.version).toBe(version);
+    expect(release.version).toBe('1.5.0');
   });
 });
