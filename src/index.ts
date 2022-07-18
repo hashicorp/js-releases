@@ -273,7 +273,7 @@ export async function getRelease(
   const versions: Record<string, Release> = Object.assign(
     {},
     ...Object.keys(response.versions)
-      .filter((key) => semver.valid(key) !== null || key === 'latest')
+      .filter((key) => semver.valid(key) !== null)
       .map((key) => ({ [key]: response.versions[key] })),
   );
 
