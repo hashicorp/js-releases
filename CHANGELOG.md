@@ -1,3 +1,22 @@
+# 1.6.1 (2022-07-22)
+
+BUG FIXES:
+
+* Fix error on picking latest vault releases by @markmartirosian in https://github.com/hashicorp/js-releases/pull/56
+
+INTERNAL:
+
+* Migrate test from mocha to jest by @dbanck in https://github.com/hashicorp/js-releases/pull/58
+* Bump prettier from 2.6.2 to 2.7.1 by @dependabot in https://github.com/hashicorp/js-releases/pull/54
+* Bump @types/semver from 7.3.9 to 7.3.10 by @dependabot in https://github.com/hashicorp/js-releases/pull/55
+* Bump typescript from 4.6.3 to 4.7.4 by @dependabot in https://github.com/hashicorp/js-releases/pull/57
+* Bump @types/jest from 28.1.4 to 28.1.5 by @dependabot in https://github.com/hashicorp/js-releases/pull/59
+* Bump @types/node from 14.18.21 to 14.18.22 by @dependabot in https://github.com/hashicorp/js-releases/pull/62
+* Bump jest from 28.1.2 to 28.1.3 by @dependabot in https://github.com/hashicorp/js-releases/pull/60
+* Bump ts-jest from 28.0.5 to 28.0.6 by @dependabot in https://github.com/hashicorp/js-releases/pull/61
+* Bump ts-jest from 28.0.6 to 28.0.7 by @dependabot in https://github.com/hashicorp/js-releases/pull/63
+* Bump @types/jest from 28.1.5 to 28.1.6 by @dependabot in https://github.com/hashicorp/js-releases/pull/64
+
 # 1.6.0 (2022-06-14)
 
 BUG FIXES:

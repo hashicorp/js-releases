@@ -1,6 +1,6 @@
 {
   "name": "@hashicorp/js-releases",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Download packages from releases.hashicorp.com",
   "main": "./out/index.js",
   "types": "./out/index.d.ts",
