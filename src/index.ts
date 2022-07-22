@@ -257,6 +257,22 @@ export class Release {
   }
 }
 
+export interface ResponseVersion {
+  builds: {
+    arch: string;
+    filename: string;
+    name: string;
+    os: string;
+    url: string;
+    version: string;
+  }[];
+  name: string;
+  shasums: string;
+  shasums_signature: string;
+  shasums_signatures: string[];
+  version: string;
+}
+
 // includePrerelease: Set to suppress the default behavior of excluding prerelease tagged versions
 // from ranges unless they are explicitly opted into.
 export async function getRelease(
@@ -268,20 +284,28 @@ export async function getRelease(
   const validVersion = semver.validRange(version, { includePrerelease, loose: true }); // "latest" will return invalid but that's ok because we'll select it by default
   const indexUrl = `${releasesUrl}/${product}/index.json`;
   const headers = userAgent ? { 'User-Agent': userAgent } : null;
-  const response = await request(indexUrl, { headers });
-  let release: Release;
+  const response = await request<{ name: string; versions: Record<string, ResponseVersion> }>(indexUrl, { headers });
+
+  const versions: Record<string, ResponseVersion> = Object.assign(
+    {},
+    ...Object.keys(response.versions)
+      .filter((key) => semver.valid(key) !== null)
+      .map((key) => ({ [key]: response.versions[key] })),
+  );
+
   if (!validVersion) {
     // pick the latest release (prereleases will be skipped for safety, set an explicit version instead)
-    const releaseVersions = Object.keys(response.versions).filter((v) => !semver.prerelease(v));
-    version = releaseVersions.sort((a, b) => semver.rcompare(a, b))[0];
-    release = new Release(response.versions[version]);
-  } else {
-    release = matchVersion(response.versions, validVersion, includePrerelease);
+    const releaseVersion = Object.keys(versions)
+      .filter((v) => !semver.prerelease(v))
+      .sort((a, b) => semver.rcompare(a, b))[0];
+
+    return new Release(versions[releaseVersion]);
   }
-  return release;
+
+  return matchVersion(versions, validVersion, includePrerelease);
 }
 
-function matchVersion(versions: Release[], range: string, includePrerelease?: boolean): Release {
+function matchVersion(versions: Record<string, ResponseVersion>, range: string, includePrerelease?: boolean): Release {
   // If a prerelease version range is given, it will only match in that series (0.14-rc0, 0.14-rc1)
   // unless includePrerelease is set to true
   // https://www.npmjs.com/package/semver#prerelease-tags
