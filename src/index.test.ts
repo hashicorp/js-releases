@@ -119,6 +119,7 @@ describe('getRelease', () => {
         '1.2.6.1+ent': { name, version: '1.2.6.1+ent' },
         '1.2.7': { name, version: '1.2.7' },
         '1.5.0': { name, version: '1.5.0' },
+        '1.6.6.1+ent': { name, version: '1.6.6.1+ent' },
       },
     }));
 
@@ -127,5 +128,21 @@ describe('getRelease', () => {
     expect(release).toBeInstanceOf(Release);
     expect(release.name).toBe(name);
     expect(release.version).toBe('1.5.0');
+  });
+
+  it('should return latest if passed an invalid version', async () => {
+    jest.spyOn(utils, 'request').mockImplementation(async () => ({
+      name,
+      versions: {
+        '1.2.7': { name, version: '1.2.7' },
+        '1.6.0': { name, version: '1.6.0' },
+      },
+    }));
+
+    const release = await getRelease(name, '1.6.6.1+ent');
+
+    expect(release).toBeInstanceOf(Release);
+    expect(release.name).toBe(name);
+    expect(release.version).toBe('1.6.0');
   });
 });
