@@ -3,19 +3,19 @@ name: Publish
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+*'
+      - "v[0-9]+.[0-9]+.[0-9]+*"
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # https://github.com/actions/checkout/releases/tag/v3.2.0
+      - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # https://github.com/actions/setup-node/releases/tag/v3.5.1
         with:
           node-version-file: .nvmrc
       - name: npm install
         run: npm ci
       - name: Publish package
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@0f451a94170d1699fd50710966d48fb26194d939 # https://github.com/JS-DevTools/npm-publish/releases/tag/v1.4.3
         with:
           token: ${{ secrets.NPM_TOKEN }}
