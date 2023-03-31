@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 import axiosBase, { AxiosRequestConfig } from 'axios';
 const HttpsProxyAgent = require('https-proxy-agent');
 
