@@ -9,13 +9,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # https://github.com/actions/checkout/releases/tag/v3.4.0
-      - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # https://github.com/actions/setup-node/releases/tag/v3.6.0
+      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+      - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
           node-version-file: .nvmrc
       - name: npm install
         run: npm ci
       - name: Publish package
-        uses: JS-DevTools/npm-publish@0f451a94170d1699fd50710966d48fb26194d939 # https://github.com/JS-DevTools/npm-publish/releases/tag/v1.4.3
+        uses: JS-DevTools/npm-publish@0f451a94170d1699fd50710966d48fb26194d939  # TSCCR: no entry for repository "JS-DevTools/npm-publish"
         with:
           token: ${{ secrets.NPM_TOKEN }}
