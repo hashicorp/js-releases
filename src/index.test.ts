@@ -43,7 +43,7 @@ describe('LS installer', () => {
   });
 
   it('should download the correct sha256 sum', async () => {
-    const expectedSum = '19d67549c9dfa6a99916351f1c5c6a40b5062e91d216c9f305d7aaf225addd0a';
+    const expectedSum = '516fd7722c2a0d2ca774110a26751879e3dfc0146c5ce9d5ed6d7b2ac54a7cbd';
 
     const remoteSum = await release.downloadSha256Sum(release.builds[0].filename);
     assert.strictEqual(remoteSum, expectedSum);
