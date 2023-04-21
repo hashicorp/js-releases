@@ -16,6 +16,6 @@ jobs:
       - name: npm install
         run: npm ci
       - name: Publish package
-        uses: JS-DevTools/npm-publish@0f451a94170d1699fd50710966d48fb26194d939 # https://github.com/JS-DevTools/npm-publish/releases/tag/v1.4.3
+        uses: JS-DevTools/npm-publish@0be441d808570461daedc3fb178405dbcac54de0 # https://github.com/JS-DevTools/npm-publish/releases/tag/v2.0.0
         with:
           token: ${{ secrets.NPM_TOKEN }}
