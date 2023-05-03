@@ -13,9 +13,7 @@ jobs:
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # https://github.com/actions/setup-node/releases/tag/v3.6.0
         with:
           node-version-file: .nvmrc
-      - name: npm install
-        run: npm ci
-      - name: Publish package
-        uses: JS-DevTools/npm-publish@0f451a94170d1699fd50710966d48fb26194d939 # https://github.com/JS-DevTools/npm-publish/releases/tag/v1.4.3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
