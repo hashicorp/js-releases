@@ -1,3 +1,36 @@
+# 1.7.0 (2023-09-07)
+
+ENHANCEMENT:
+
+* Add PR test for copyright headers by @radeksimko in https://github.com/hashicorp/js-releases/pull/127
+* Migrate to plain npm publish by @jpogran in https://github.com/hashicorp/js-releases/pull/136
+
+BUG FIXES:
+
+* Update checksum test by @dbanck in https://github.com/hashicorp/js-releases/pull/111
+* Fix outdated SHA in test by @radeksimko in https://github.com/hashicorp/js-releases/pull/126
+
+INTERNAL:
+
+* Add CODEOWNERS file by @radeksimko in https://github.com/hashicorp/js-releases/pull/102
+* Pin external GitHub Actions to hashes by @dbanck in https://github.com/hashicorp/js-releases/pull/99
+* Add MPL 2.0 LICENSE by @hashicorp-copywrite in https://github.com/hashicorp/js-releases/pull/84
+* Update openpgp and remove pin to specific version by @dbanck in https://github.com/hashicorp/js-releases/pull/91
+* Update minimatch to 3.1.2 by @dbanck in https://github.com/hashicorp/js-releases/pull/92
+* Add Copyright and License Headers by @hashicorp-copywrite in https://github.com/hashicorp/js-releases/pull/109
+* Bump @types/node from 14.18.22 to 14.18.58 by @dependabot in https://github.com/hashicorp/js-releases/pull/65
+* Bump @types/semver from 7.3.10 to 7.5.1 by @dependabot in https://github.com/hashicorp/js-releases/pull/67
+* Bump ts-jest from 28.0.7 to 28.0.8 by @dependabot in https://github.com/hashicorp/js-releases/pull/68
+* Bump @types/jest from 28.1.6 to 28.1.8 by @dependabot in https://github.com/hashicorp/js-releases/pull/70
+* Bump semver from 7.3.7 to 7.5.4 by @dependabot in https://github.com/hashicorp/js-releases/pull/82
+* Bump typescript from 4.7.4 to 4.9.5 by @dependabot in https://github.com/hashicorp/js-releases/pull/81
+* Bump prettier from 2.7.1 to 2.8.8 by @dependabot in https://github.com/hashicorp/js-releases/pull/97
+* Bump json5 from 2.2.1 to 2.2.3 by @dependabot in https://github.com/hashicorp/js-releases/pull/103
+* Bump actions/checkout from 3.2.0 to 4.0.0 by @dependabot in https://github.com/hashicorp/js-releases/pull/105
+* Bump actions/setup-node from 3.5.1 to 3.8.1 by @dependabot in https://github.com/hashicorp/js-releases/pull/104
+* Bump openpgp from 5.5.0 to 5.10.1 by @dependabot in https://github.com/hashicorp/js-releases/pull/113
+* Bump hashicorp/setup-copywrite from 1.0.0 to 1.1.2 by @dependabot in https://github.com/hashicorp/js-releases/pull/132
+
 # 1.6.1 (2022-07-22)
 
 BUG FIXES:
