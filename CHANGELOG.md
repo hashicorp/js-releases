@@ -1,3 +1,19 @@
+# 1.7.1 (2023-10-24)
+
+ENHANCEMENT:
+
+* Bump Node version to 18 by @dbanck in https://github.com/hashicorp/js-releases/pull/168
+
+INTERNAL:
+
+* Bump @types/node from 14.18.58 to 18.18.6 by @dependabot in https://github.com/hashicorp/js-releases/pull/167
+* Bump @types/semver from 7.5.1 to 7.5.4 by @dependabot in https://github.com/hashicorp/js-releases/pull/169
+* Bump openpgp from 5.10.1 to 5.10.2 by @dependabot in https://github.com/hashicorp/js-releases/pull/172
+* Bump @types/yauzl from 2.10.0 to 2.10.2 by @dependabot in https://github.com/hashicorp/js-releases/pull/175
+* SEC-090: Automated trusted workflow pinning (2023-09-27) by @hashicorp-tsccr in https://github.com/hashicorp/js-releases/pull/179
+* Bump actions/checkout from 4.0.0 to 4.1.0 by @dependabot in https://github.com/hashicorp/js-releases/pull/180
+* Bump @babel/traverse from 7.18.8 to 7.23.2 by @dependabot in https://github.com/hashicorp/js-releases/pull/185
+
 # 1.7.0 (2023-09-07)
 
 ENHANCEMENT:
