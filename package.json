@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/hashicorp/js-releases#readme",
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^1.6.2",
     "https-proxy-agent": "^5.0.1",
     "openpgp": "^5.5.0",
     "semver": "^7.3.5",
