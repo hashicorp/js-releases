@@ -1,10 +1,8 @@
 # 1.7.2 (2023-11-27)
 
-ENHANCEMENT:
-* Update Axios to 1.6.2 by @xiehan in https://github.com/hashicorp/js-releases/pull/206
-
 INTERNAL:
 
+* Update Axios to 1.6.2 by @xiehan in https://github.com/hashicorp/js-releases/pull/206
 * Bump @types/node from 18.18.6 to 18.18.7 by @dependabot in https://github.com/hashicorp/js-releases/pull/192
 * Bump openpgp from 5.10.2 to 5.11.0 by @dependabot in https://github.com/hashicorp/js-releases/pull/193
 * Bump actions/checkout from 4.1.0 to 4.1.1 by @dependabot in https://github.com/hashicorp/js-releases/pull/186
