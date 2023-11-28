@@ -1,3 +1,23 @@
+# 1.7.2 (2023-11-27)
+
+INTERNAL:
+
+* Update Axios to 1.6.2 by @xiehan in https://github.com/hashicorp/js-releases/pull/206
+* Bump @types/node from 18.18.6 to 18.18.7 by @dependabot in https://github.com/hashicorp/js-releases/pull/192
+* Bump openpgp from 5.10.2 to 5.11.0 by @dependabot in https://github.com/hashicorp/js-releases/pull/193
+* Bump actions/checkout from 4.1.0 to 4.1.1 by @dependabot in https://github.com/hashicorp/js-releases/pull/186
+* Bump @types/node from 18.18.7 to 18.18.8 by @dependabot in https://github.com/hashicorp/js-releases/pull/194
+* github: Disable dependabot for GHA by @radeksimko in https://github.com/hashicorp/js-releases/pull/195
+* Bump @types/yauzl from 2.10.2 to 2.10.3 by @dependabot in https://github.com/hashicorp/js-releases/pull/198
+* Bump @types/semver from 7.5.4 to 7.5.5 by @dependabot in https://github.com/hashicorp/js-releases/pull/197
+* Bump @types/node from 18.18.8 to 18.18.9 by @dependabot in https://github.com/hashicorp/js-releases/pull/196
+* Bump @types/node from 18.18.9 to 18.18.10 by @dependabot in https://github.com/hashicorp/js-releases/pull/201
+* build(deps): Bump workflows to latest trusted versions by @hashicorp-tsccr in https://github.com/hashicorp/js-releases/pull/200
+* Bump @types/node from 18.18.10 to 18.18.11 by @dependabot in https://github.com/hashicorp/js-releases/pull/203
+* Bump @types/semver from 7.5.5 to 7.5.6 by @dependabot in https://github.com/hashicorp/js-releases/pull/202
+* Bump @types/node from 18.18.11 to 18.18.12 by @dependabot in https://github.com/hashicorp/js-releases/pull/204
+* Bump @types/node from 18.18.12 to 18.18.13 by @dependabot in https://github.com/hashicorp/js-releases/pull/205
+
 # 1.7.1 (2023-10-24)
 
 ENHANCEMENT:
