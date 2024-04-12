@@ -318,6 +318,6 @@ function matchVersion(versions: Record<string, ResponseVersion>, range: string, 
   if (version) {
     return new Release(versions[version]);
   } else {
-    throw new Error('No matching version found');
+    throw new Error(`No matching version found for constraint "${range}"`);
   }
 }
