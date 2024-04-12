@@ -114,7 +114,7 @@ describe('getRelease', () => {
     }));
 
     const version = '1.2.7';
-    await expect(getRelease(name, version)).rejects.toThrow('No matching version found');
+    await expect(getRelease(name, version)).rejects.toThrow('No matching version found for constraint "1.2.7"');
   });
 
   it('should filter invalid versions', async () => {
