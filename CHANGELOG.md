@@ -1,3 +1,14 @@
+# 1.7.3 (2024-08-14)
+
+ENHANCEMENTS
+
+* feat: show requested version in error when none was matched by @ansgarm in https://github.com/hashicorp/js-releases/pull/250
+
+BUG FIXES
+
+* Bump axios to 1.7 by @jpogran in https://github.com/hashicorp/js-releases/pull/278
+* Bump braces to 3.0.3 by @jpogran in https://github.com/hashicorp/js-releases/pull/279
+
 # 1.7.2 (2023-11-27)
 
 INTERNAL:
