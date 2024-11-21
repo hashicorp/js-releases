@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ */
+
 import pluginJs from '@eslint/js';
 import globals from 'globals';
 import prettierConfig from 'eslint-config-prettier';
