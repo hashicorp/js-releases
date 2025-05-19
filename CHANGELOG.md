@@ -1,3 +1,10 @@
+# 1.7.4 (2025-05-19)
+
+INTERNAL
+
+* (TFECO-8260) Add Heimdall metadata by @jpogran in https://github.com/hashicorp/js-releases/pull/306
+* (TFECO-8259) Add js linting by @jpogran in https://github.com/hashicorp/js-releases/pull/307
+
 # 1.7.3 (2024-08-14)
 
 ENHANCEMENTS
