@@ -2,8 +2,8 @@
 
 INTERNAL
 
-* build(deps): bump semver from 7.7.1 to 7.7.2 by @jpogran in https://github.com/hashicorp/js-releases/pull/377
-* build(deps-dev): bump @types/node from 18.19.75 to 18.19.101 by @jpogran in https://github.com/hashicorp/js-releases/pull/378
+* build(deps): bump semver from 7.7.1 to 7.7.2 by @dependabot in https://github.com/hashicorp/js-releases/pull/377
+* build(deps-dev): bump @types/node from 18.19.75 to 18.19.101 by @dependabot in https://github.com/hashicorp/js-releases/pull/378
 
 # 1.7.4 (2025-05-19)
 
