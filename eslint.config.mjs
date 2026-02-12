@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2020, 2025
+ * Copyright IBM Corp. 2020, 2026
  */
 
 import pluginJs from '@eslint/js';
