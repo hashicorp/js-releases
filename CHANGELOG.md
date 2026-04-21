@@ -1,3 +1,10 @@
+# 1.7.6 (2026-04-21)
+
+INTERNAL
+
+* Updated: public pgp key @anubhav-goel in https://github.com/hashicorp/js-releases/pull/471
+
+
 # 1.7.5 (2025-05-19)
 
 INTERNAL
