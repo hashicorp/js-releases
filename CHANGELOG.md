@@ -1,9 +1,16 @@
+# 1.7.7 (2026-05-11)
+
+INTERNAL
+
+* build(deps): bump axios from 1.15.1 to 1.16.0 by @dependabot[bot] in https://github.com/hashicorp/js-releases/pull/474
+* fix: update https-proxy-agent to v7 to resolve Node 24 DEP0169 warning by @ansgarm in https://github.com/hashicorp/js-releases/pull/476
+* build(deps): bump semver from 7.7.4 to 7.8.0 by @dependabot[bot] in https://github.com/hashicorp/js-releases/pull/475
+
 # 1.7.6 (2026-04-21)
 
 INTERNAL
 
 * Updated: public pgp key @anubhav-goel in https://github.com/hashicorp/js-releases/pull/471
-
 
 # 1.7.5 (2025-05-19)
 
