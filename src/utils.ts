@@ -4,7 +4,7 @@
  */
 
 import axiosBase, { AxiosRequestConfig } from 'axios';
-const HttpsProxyAgent = require('https-proxy-agent');
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 const httpProxy = process.env['HTTP_PROXY'] || process.env['http_proxy'];
 const httpsProxy = process.env['HTTPS_PROXY'] || process.env['https_proxy'];
