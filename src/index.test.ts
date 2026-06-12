@@ -7,12 +7,26 @@ import * as assert from 'assert';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as tempy from 'tempy';
+import * as openpgp from 'openpgp';
 
 import { getRelease, Release } from './index';
 import * as utils from './utils';
 
 describe('LS installer', () => {
   let release: Release;
+
+  beforeEach(() => {
+    jest.spyOn(openpgp, 'readKey').mockResolvedValue({} as any);
+    jest.spyOn(openpgp, 'readSignature').mockResolvedValue({} as any);
+    jest.spyOn(openpgp, 'createMessage').mockResolvedValue({} as any);
+    jest.spyOn(openpgp, 'verify').mockResolvedValue({
+      signatures: [{ verified: Promise.resolve(true) }],
+    } as any);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   beforeAll(() => {
     release = new Release({
@@ -47,6 +61,30 @@ describe('LS installer', () => {
 
     const remoteSum = await release.downloadSha256Sum(release.builds[0].filename);
     assert.strictEqual(remoteSum, expectedSum);
+  });
+
+  it('should fail if the SHASUMS signature cannot be validated', async () => {
+    const failedVerification = Promise.reject(new Error('invalid signature'));
+    failedVerification.catch(() => {});
+
+    jest.spyOn(utils, 'request').mockImplementation(async (url) => {
+      if (url.endsWith('.sig')) {
+        return '00';
+      }
+
+      return `${'516fd7722c2a0d2ca774110a26751879e3dfc0146c5ce9d5ed6d7b2ac54a7cbd'}  ${release.builds[0].filename}\n`;
+    });
+
+    jest.spyOn(openpgp, 'readKey').mockResolvedValue({} as any);
+    jest.spyOn(openpgp, 'readSignature').mockResolvedValue({} as any);
+    jest.spyOn(openpgp, 'createMessage').mockResolvedValue({} as any);
+    jest.spyOn(openpgp, 'verify').mockResolvedValue({
+      signatures: [{ verified: failedVerification }],
+    } as any);
+
+    await expect(release.downloadSha256Sum(release.builds[0].filename)).rejects.toThrow(
+      'signature could not be verified',
+    );
   });
 
   it(
